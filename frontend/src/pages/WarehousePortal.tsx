@@ -1,35 +1,66 @@
 import React, { useState } from 'react';
+import Header from '../components/Header';
+import MenuBar from '../components/MenuBar';
+import '../styles/theme.css';
+import { FaUpload } from "react-icons/fa";
 
 // Placeholder Acknowledge Shipment form component (for updating shipment status and marking deliveries as Received or Damaged)
 const AcknowledgeShipment: React.FC = () => {
   const [shipmentId, setShipmentId] = useState('');
   const [status, setStatus] = useState('Received');
   const [remarks, setRemarks] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Call API (or dispatch action) to update shipment status.
     console.log("Acknowledge Shipment submitted:", { shipmentId, status, remarks });
   };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      // You can add file reading logic here
+      console.log("Selected file:", file);
+    }
+  };
   return (
     <div>
-      <h2>Acknowledge Shipment</h2>
+      <h2 style={{ marginBottom: 20, color: 'var(--primary-color)' }}>Acknowledge Shipment</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <label>Shipment ID:</label>
           <input type="text" value={shipmentId} onChange={(e) => setShipmentId(e.target.value)} required />
         </div>
-        <div>
+        <div className="form-group">
+          <label htmlFor="partFile" style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+            <span>Insert Shipment Cotents from File (.xlsx, .pdf, .csv):</span>
+            <FaUpload style={{ fontSize: 20, color: 'var(--primary-color)' }} />
+            {selectedFile && (
+              <span style={{ marginLeft: 12, color: 'var(--text-muted)', fontSize: 13 }}>
+                {selectedFile.name}
+              </span>
+            )}
+          </label>
+          <input
+            id="partFile"
+            type="file"
+            accept=".csv,.xlsx,.xls,.txt"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+        </div>
+        <div className="form-group">
           <label>Status:</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border-color)' }}>
             <option value="Received">Received</option>
             <option value="Damaged">Damaged</option>
           </select>
         </div>
-        <div>
+        <div className="form-group">
           <label>Remarks (optional):</label>
           <textarea value={remarks} onChange={(e) => setRemarks(e.target.value)} />
         </div>
-        <button type="submit">Submit</button>
+        <button className="button" type="submit">Submit</button>
       </form>
     </div>
   );
@@ -48,25 +79,29 @@ const DispatchEntry: React.FC = () => {
   };
   return (
     <div>
-      <h2>Dispatch Entry</h2>
+      <h2 style={{ marginBottom: 20, color: 'var(--primary-color)' }}>Dispatch Entry</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
+          <label>Dispatch ID:</label>
+          <input type="text" value={part} onChange={(e) => setPart(e.target.value)} required />
+        </div>
+        <div className="form-group">
           <label>Part (SKU):</label>
           <input type="text" value={part} onChange={(e) => setPart(e.target.value)} required />
         </div>
-        <div>
+        <div className="form-group">
           <label>Quantity:</label>
           <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
         </div>
-        <div>
+        <div className="form-group">
           <label>Dispatch Date (e.g. 2023-12-31):</label>
           <input type="text" value={dispatchDate} onChange={(e) => setDispatchDate(e.target.value)} required />
         </div>
-        <div>
+        <div className="form-group">
           <label>Remarks (optional):</label>
           <textarea value={remarks} onChange={(e) => setRemarks(e.target.value)} />
         </div>
-        <button type="submit">Submit</button>
+        <button className="button" type="submit">Submit</button>
       </form>
     </div>
   );
@@ -74,34 +109,39 @@ const DispatchEntry: React.FC = () => {
 
 // Placeholder Activity Dashboard component (for viewing incoming, pending, processed shipments, dispatch history, and inventory levels)
 const ActivityDashboard: React.FC = () => {
-  // In a real component, you would fetch (or read from a context) incoming, pending, processed shipments, dispatch history, and inventory levels.
-  const incomingShipments = "Incoming Shipments (placeholder)";
-  const pendingShipments = "Pending Shipments (placeholder)";
-  const processedShipments = "Processed Shipments (placeholder)";
-  const dispatchHistory = "Dispatch History (placeholder)";
-  const inventoryLevels = "Inventory Levels (placeholder)";
+  const stats = [
+    { number: 5, label: "Incoming Shipments" },
+    { number: 2, label: "Pending Shipments" },
+    { number: 12, label: "Processed Shipments" },
+    { number: 7, label: "Dispatches Today" },
+  ];
   return (
-    <div>
-      <h2>Activity Dashboard</h2>
-      <p>Incoming Shipments: {incomingShipments}</p>
-      <p>Pending Shipments: {pendingShipments}</p>
-      <p>Processed Shipments: {processedShipments}</p>
-      <p>Dispatch History: {dispatchHistory}</p>
-      <p>Inventory Levels: {inventoryLevels}</p>
-    </div>
+      <div className="dashboard-cards">
+        {stats.map((stat, idx) => (
+          <div className="dashboard-card" key={idx}>
+            <div className="dashboard-card-number">{stat.number}</div>
+            <div className="dashboard-card-label">{stat.label}</div>
+          </div>
+        ))}
+      </div>
   );
 };
 
 // Warehouse Manager Portal (wrapper) component
-const WarehouseManagerPortal: React.FC = () => {
+const WarehousePortal: React.FC = () => {
   return (
-    <div>
-      <h1>Warehouse Manager Portal</h1>
-      <AcknowledgeShipment />
-      <DispatchEntry />
-      <ActivityDashboard />
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <MenuBar />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Header moduleName="Warehouse Portal" />
+        <div className="main-content" style={{ width: '100%' }}>
+          <ActivityDashboard />
+          <div style={{ marginTop: '40px' }} className="card"><AcknowledgeShipment /></div>
+          <div className="card"><DispatchEntry /></div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default WarehouseManagerPortal; 
+export default WarehousePortal; 

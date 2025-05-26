@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SupplierPortal from "./pages/SupplierPortal";
-import WarehouseManagerPortal from "./pages/WarehouseManagerPortal";
+import WarehousePortal from "./pages/WarehousePortal";
 import CompanyPortal from "./pages/CompanyPortal";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
@@ -40,7 +40,7 @@ const App: React.FC = () => (
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/supplier" element={<SupplierPortal />} />
-        <Route path="/warehouse" element={<WarehouseManagerPortal />}/>
+        <Route path="/warehouse" element={<WarehousePortal />}/>
         <Route path="/company" element={<CompanyPortal />}/>
         {/* <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/supplier" element={<ProtectedRoute><SupplierPortal /></ProtectedRoute>} />

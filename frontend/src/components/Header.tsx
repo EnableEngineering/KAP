@@ -1,10 +1,15 @@
 import React from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
+import '../styles/theme.css';
 
-const Header: React.FC = () => (
+interface HeaderProps {
+  moduleName: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ moduleName }) => (
   <header style={{
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: "1rem 2rem",
     background: "#fff",
@@ -12,9 +17,14 @@ const Header: React.FC = () => (
     height: 70,
     width: "100%",
   }}>
-    <FaBell size={22} style={{ marginRight: 24, color: "#181F2B", cursor: "pointer" }} />
-    <FaUserCircle size={32} style={{ color: "#181F2B", cursor: "pointer" }} />
+    <span style={{ fontWeight: 600, fontSize: 22, color: "#FFFFFF" }}>
+      {moduleName}
+    </span>
+    <div>
+      <FaBell size={22} style={{ marginRight: 24, color: "#181F2B", cursor: "pointer" }} />
+      <FaUserCircle size={32} style={{ color: "#181F2B", cursor: "pointer" }} />
+    </div>
   </header>
 );
 
-export default Header; 
+export default Header;

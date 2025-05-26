@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import '../styles/theme.css';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
               value={username}
               onChange={e => setUsername(e.target.value)}
               style={{
-                width: "90%",
+                width: "100%",
                 padding: "0.75rem 1rem",
                 borderRadius: 8,
                 border: "1px solid #D1D5DB",
@@ -69,7 +70,7 @@ const Login: React.FC = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               style={{
-                width: "90%",
+                width: "92%",
                 padding: "0.75rem 1rem",
                 borderRadius: 8,
                 border: "1px solid #D1D5DB",
@@ -100,7 +101,7 @@ const Login: React.FC = () => {
           </button>
         </form>
         <div style={{ marginTop: 18, width: "100%", textAlign: "center" }}>
-          <span style={{ color: "#232B3E", fontSize: 15 }}>Don't have an account? </span>
+          <span style={{ color: "#232B3E", fontSize: 15 }}>Manage Users? </span>
           <a
             href="#"
             onClick={e => {
@@ -109,7 +110,7 @@ const Login: React.FC = () => {
             }}
             style={{ color: "#4F8CFF", textDecoration: "none", fontWeight: 500 }}
           >
-            Register
+            Admin Console
           </a>
         </div>
       </div>
